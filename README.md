@@ -1,13 +1,7 @@
 # Univariate-Time-Series-Forecasting
 The task is to explore machine learning techniques and develop a data-driven model for hourly forecasts of  future energy demand accurately.
 
-# Electricity Consumption Forecasting a complete ML Pipeline
-
-A comprehensive end-to-end Machine Learning pipeline for forecasting **hourly electricity consumption (MWh)** using statistical, machine learning, and deep learning models.
-
----
-
-## Project Overview
+## Overview
 
 This project builds and benchmarks multiple forecasting models to predict hourly electricity demand using historical time-series data.
 
@@ -22,17 +16,16 @@ The pipeline includes:
 - Deep learning model (LSTM)
 - Model comparison & evaluation
 
----
-
 ## Dataset Description
 
-The dataset contains:
+The dataset contains 52966 data points or values of energy prediction across time intervals. Mostly the time-intervals are or 1 hours, however fluctuations exists.
 
+Columns:
 - `Start time UTC`
 - `End time UTC`
 - `Electricity consumption (MWh)`
 
-After preprocessing:
+After preprocessing the data attributes are as follows:
 
 - timestamp
 - consumption
@@ -44,8 +37,6 @@ Data Characteristics:
 - Daily and weekly seasonality
 - Stationary
 
----
-
 ## Machine Learning Pipeline
 
 ### Phase 1: Data Loading & Inspection
@@ -56,17 +47,22 @@ Data Characteristics:
 ### Phase 2: Data Preprocessing
 - Handle missing values (forward fill / interpolation)
 - Remove outliers using IQR method
+- Applying differencing if needed
 
 ### Phase 3: Exploratory Data Analysis
 - Seasonal decomposition (Trend + Seasonality + Residual)
 - Stationarity check (ADF test)
-- ACF & PACF analysis
+- Autocorrelation & partial autocorrelation (ACF, PACF) plot
+- Visualize time-series trends
+- Identify seasonality patterns (daily, weekly, monthly)
 
 ### Phase 4: Feature Engineering
 - Lag features (1, 3, 6, 12, 24, 48, 168 hours)
 - Rolling statistics (mean, std, min, max)
-- Temporal features (hour, day, month)
+- Temporal features (hour, day, week, month, season)
 - Cyclical encoding (sin/cos transformations)
+- Holiday or special event indicators
+- Normalizing and scaling data
 
 ### Phase 5: Train / Validation / Test Split
 - 70% Train
@@ -74,14 +70,12 @@ Data Characteristics:
 - 15% Test
 - No random shuffling (time-series safe)
 
-### Phase 6–10: Model Training
-- Naive Baseline
-- Seasonal Naive
-- ARIMA
-- Prophet
-- LSTM
-- XGBoost
-- LightGBM
+### Phase 6–10: Model Building & Training
+- Start with baseline models (Naive Baseline, Seasonal Naive)
+- ARIMA/ Prophet for quick baseline
+- Implement LSTM for deep learning
+- Ensemble multiple models (XG Boost, LightGBM)
+- Hyperparameter tuning
 
 ### Phase 11: Model Comparison
 - Rank models by MAE
@@ -90,7 +84,7 @@ Data Characteristics:
 ### Phase 12: Reporting
 - Generate final performance summary
 - Save all plots automatically
-
+ <img width="5369" height="1759" alt="08_model_comparison" src="https://github.com/user-attachments/assets/acc23601-667d-421b-b265-dacf8a483e40" />
 ---
 
 ## Models Implemented
@@ -128,10 +122,11 @@ Penalizes large prediction errors.
 Percentage-based interpretability.
 
 Lower values indicate better performance.
+LSTM gives lowest values for all three metrics.
 
 ---
 
-## Generated Visualizations
+## Outcomes:
 
 The pipeline automatically generates:
 
@@ -145,5 +140,13 @@ The pipeline automatically generates:
 - `08_model_comparison.png`
 - `09_predictions_visualization.png`
 
----
+## Why I chose LSTM? (Explanation)
+
+1. Massive available dataset with 52966 values, high non-linearity, complex long term dependencies, and need for high accuracy for as complex domain as energy prediction, LSTM is highly suited. 
+2. LSTM networks manually learn relevant features from raw sequential data, eliminating the need for manual, time-consuming feature engineering (like computing moving averages or seasonality checks) required by classical methods.
+3. LSTM can handle raw , non-stationary, and non-linear patterns for real world data like energy prediction, weather forecasting, etc.
+4. Traditional models are better suited for linear patterns and statistical analysis. LSTM which is a deep learning RNN model is widely used for non-linear, complex data.
+5. Traditional models suffer from vanishing gradients, so they likely don't remeber information from long sequences. LSTM has special gating mechanism which allows it to retain information over longer sequence. This ir crucial for hourly, daily or weekly energy prediction.
+Here is the output for daily energy prediction:
+<img width="5370" height="2966" alt="11_test_performance_vs_future_forecast" src="https://github.com/user-attachments/assets/371ef1c2-69b5-4d3f-aa55-59f17cd0ceee" />
 
